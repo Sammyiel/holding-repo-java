@@ -32,6 +32,12 @@ public class ProductService {
     public Optional<Product> getProductById(UUID id){
         return productData.selectProductById(id);
     }
+    public int deleteProduct(UUID id){
+        return productData.deleteProductById(id);
+    }
+    public int updateProduct(UUID id, Product newProduct){
+        return productData.updateProductById(id, newProduct);
+    }
 
 
 

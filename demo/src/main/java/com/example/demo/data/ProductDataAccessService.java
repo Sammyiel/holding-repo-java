@@ -32,12 +32,26 @@ public class ProductDataAccessService implements  ProductData{
 
     @Override
     public int deleteProductById(UUID id) {
-        return 0;
+        Optional<Product> productMaybe=selectProductById(id);
+        if(productMaybe.isEmpty()){
+            return 0;
+        }
+        DB.remove(productMaybe.get());
+        return 1;
     }
 
     @Override
-    public int updateProductById(UUID id, Product product) {
+    public int updateProductById(UUID id, Product update) {
+        return selectProductById(id)
+                .map(product -> {
+                    int indexOfProductToUpdate = DB.indexOf(product);
+                        if(indexOfProductToUpdate >= 0) {
+                            DB.set(indexOfProductToUpdate, new Product(id, update.getName(), update.getPrice(), update.getQuantity()));
+                            return 1;
+                        }
+                        return 0;
+                })
+                .orElse(0);
 
-        return 0;
     }
 }
